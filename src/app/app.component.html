@@ -1,0 +1,15 @@
+<table>
+  <tbody>
+    <tr *ngFor="let row of getArray(10)">
+      <td *ngFor="let cell of getArray(10)"
+        (click)="mark($event, cell, row)"></td>
+    </tr>
+  </tbody>
+</table>
+
+<button (click)="clear()">Clear</button>
+<button (click)="analyze()">Analyze</button>
+<button (click)="next()">Next</button>
+<button (click)="playPause()">{{otherState}}</button>
+<br>
+<input type="range" max="100" min="1" (change)="onChangeSpeed($event)">
