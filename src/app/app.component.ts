@@ -1,4 +1,4 @@
-import { Component, AfterViewInit } from '@angular/core';
+import { Component, AfterViewInit, ViewChildren } from '@angular/core';
 import { viewClassName } from '@angular/compiler';
 
 @Component({
@@ -7,6 +7,8 @@ import { viewClassName } from '@angular/compiler';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements AfterViewInit {
+  @ViewChildren('cell') tds;
+
   readonly WIDTH = 10;
   readonly HEIGHT = 10;
 
@@ -18,7 +20,7 @@ export class AppComponent implements AfterViewInit {
   state = 'Pause';
 
   ngAfterViewInit() {
-    this.cells = document.body.querySelectorAll('td');
+    this.cells =  this.tds.map(e => e.nativeElement); //document.body.querySelectorAll('td');//
   }
 
   getArray(size) {
@@ -58,12 +60,12 @@ export class AppComponent implements AfterViewInit {
       }
     }
 
-    spawning.map(cellIdx => this.cells.item(cellIdx).classList.add('marked'));
-    dying.map(cellIdx => this.cells.item(cellIdx).classList.remove('marked'));
+    spawning.map(cellIdx => this.cells[cellIdx].classList.add('marked'));
+    dying.map(cellIdx => this.cells[cellIdx].classList.remove('marked'));
   }
 
   getCell(x, y) {
-    return this.cells.item(y * this.WIDTH + x);
+    return this.cells[y * this.WIDTH + x];
   }
 
   countNeighbors(x, y) {
@@ -134,7 +136,7 @@ export class AppComponent implements AfterViewInit {
 
     for (let y = 0; y < this.HEIGHT; y++) {
       for (let x = 0; x < this.WIDTH; x++) {
-        cells.item(y * this.WIDTH + x).innerHTML = this.countNeighbors(
+        cells[y * this.WIDTH + x].innerHTML = this.countNeighbors(
           x,
           y
         ).toString();
@@ -144,7 +146,7 @@ export class AppComponent implements AfterViewInit {
 
   clear() {
     for (let i = 0; i < this.cells.length; i++) {
-      this.cells.item(i).classList.remove('marked');
+      this.cells[i].classList.remove('marked');
     }
 
     if (this.state === 'Play') {

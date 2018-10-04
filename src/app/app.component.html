@@ -1,7 +1,7 @@
 <table>
   <tbody>
     <tr *ngFor="let row of getArray(10)">
-      <td *ngFor="let cell of getArray(10)"
+      <td #cell *ngFor="let cell of getArray(10)"
         (click)="mark($event, cell, row)"></td>
     </tr>
   </tbody>
