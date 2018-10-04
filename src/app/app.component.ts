@@ -7,9 +7,10 @@ import { viewClassName } from '@angular/compiler';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements AfterViewInit {
-  timeout: number;
   readonly WIDTH = 10;
   readonly HEIGHT = 10;
+
+  timeout: number;
 
   cells: any;
 
@@ -52,7 +53,7 @@ export class AppComponent implements AfterViewInit {
 
       if (isLive && (neighbors < 2 || neighbors > 3)) {
         dying.push(y * this.WIDTH + x);
-      } else if (!isLive && (neighbors === 3)) {
+      } else if (!isLive && neighbors === 3) {
         spawning.push(y * this.WIDTH + x);
       }
     }
@@ -118,7 +119,6 @@ export class AppComponent implements AfterViewInit {
     }
   }
 
-
   playPause() {
     this.state = this.state === 'Play' ? 'Pause' : 'Play';
 
@@ -134,7 +134,10 @@ export class AppComponent implements AfterViewInit {
 
     for (let y = 0; y < this.HEIGHT; y++) {
       for (let x = 0; x < this.WIDTH; x++) {
-        cells.item(y * this.WIDTH + x).innerHTML = this.countNeighbors(x, y).toString();
+        cells.item(y * this.WIDTH + x).innerHTML = this.countNeighbors(
+          x,
+          y
+        ).toString();
       }
     }
   }
@@ -151,7 +154,7 @@ export class AppComponent implements AfterViewInit {
 
   onChangeSpeed($event) {
     this.speed = 1000 / $event.currentTarget.value;
-console.log(this.speed);
+    console.log(this.speed);
 
     clearTimeout(this.timeout);
 
