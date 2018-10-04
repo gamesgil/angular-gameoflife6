@@ -20,7 +20,7 @@ export class AppComponent implements AfterViewInit {
   state = 'Pause';
 
   ngAfterViewInit() {
-    this.cells =  this.tds.map(e => e.nativeElement); //document.body.querySelectorAll('td');//
+    this.cells = this.tds.map(e => e.nativeElement);
   }
 
   getArray(size) {
