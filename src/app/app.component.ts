@@ -12,7 +12,7 @@ export class AppComponent implements AfterViewInit {
   readonly WIDTH = 10;
   readonly HEIGHT = 10;
 
-  timeout: number;
+  timeout: any;
 
   cells: any;
 
@@ -117,7 +117,9 @@ export class AppComponent implements AfterViewInit {
     this.next();
 
     if (this.state === 'Play') {
-      this.timeout = setTimeout(this.autoplay.bind(this), this.speed);
+      // old school
+      // this.timeout = setTimeout(this.autoplay.bind(this), this.speed);
+      this.timeout = setTimeout(_ => this.autoplay(), this.speed);
     }
   }
 
@@ -156,7 +158,6 @@ export class AppComponent implements AfterViewInit {
 
   onChangeSpeed($event) {
     this.speed = 1000 / $event.currentTarget.value;
-    console.log(this.speed);
 
     clearTimeout(this.timeout);
 
