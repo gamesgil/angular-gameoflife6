@@ -9,7 +9,7 @@ import { viewClassName } from '@angular/compiler';
 export class AppComponent implements AfterViewInit {
   @ViewChildren('cell') tds;
 
-  readonly WIDTH = 10;
+  readonly WIDTH = 20;
   readonly HEIGHT = 10;
 
   timeout: any;
