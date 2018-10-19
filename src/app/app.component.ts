@@ -19,12 +19,21 @@ export class AppComponent implements AfterViewInit {
   speed = 500;
   state = 'Pause';
 
+  opacities = new Array(this.WIDTH * this.HEIGHT).fill(1);
+  isAnalyzeMode = false;
+
   ngAfterViewInit() {
     this.cells = this.tds.map(e => e.nativeElement);
   }
 
   getArray(size) {
     return new Array(size).fill(0).map((item, idx) => idx);
+
+
+  }
+
+  getOpacity(x, y) {
+    return this.opacities ? (this.opacities[y * this.WIDTH + x]).toString() : '1';
   }
 
   mark(event, x, y) {
@@ -38,6 +47,10 @@ export class AppComponent implements AfterViewInit {
 
     if (this.state === 'Play') {
       this.playPause();
+    }
+
+    if (this.isAnalyzeMode) {
+      this.analyze();
     }
   }
 
@@ -55,13 +68,30 @@ export class AppComponent implements AfterViewInit {
 
       if (isLive && (neighbors < 2 || neighbors > 3)) {
         dying.push(y * this.WIDTH + x);
+
+        this.opacities[y * this.WIDTH + x] = 1;
       } else if (!isLive && neighbors === 3) {
         spawning.push(y * this.WIDTH + x);
+
+        this.opacities[y * this.WIDTH + x] = 1;
+      } else {
+        this.opacities[y * this.WIDTH + x] = Math.max(0.2, this.opacities[y * this.WIDTH + x] - 0.1);
       }
     }
 
-    spawning.map(cellIdx => this.cells[cellIdx].classList.add('marked'));
-    dying.map(cellIdx => this.cells[cellIdx].classList.remove('marked'));
+    spawning.map(cellIdx => {
+      this.cells[cellIdx].classList.add('marked');
+    });
+
+    dying.map(cellIdx => {
+      this.cells[cellIdx].classList.remove('marked');
+
+      this.cells[cellIdx].style.opacity = 1;
+    });
+
+    if (this.isAnalyzeMode) {
+      this.analyze();
+    }
   }
 
   getCell(x, y) {
@@ -133,20 +163,26 @@ export class AppComponent implements AfterViewInit {
     }
   }
 
-  analyze() {
-    const cells = document.body.querySelectorAll('td');
+  onClickAnalyze(e) {
+    this.isAnalyzeMode = e.target.checked;
 
+    this.analyze();
+  }
+
+  analyze() {
     for (let y = 0; y < this.HEIGHT; y++) {
       for (let x = 0; x < this.WIDTH; x++) {
-        cells[y * this.WIDTH + x].innerHTML = this.countNeighbors(
+        this.cells[y * this.WIDTH + x].innerHTML = this.isAnalyzeMode ? this.countNeighbors(
           x,
           y
-        ).toString();
+        ).toString() : '';
       }
     }
   }
 
   clear() {
+    this.opacities.map(val => 1);
+
     for (let i = 0; i < this.cells.length; i++) {
       this.cells[i].classList.remove('marked');
     }
@@ -154,6 +190,14 @@ export class AppComponent implements AfterViewInit {
     if (this.state === 'Play') {
       this.playPause();
     }
+
+    if (this.isAnalyzeMode) {
+      this.analyze();
+    }
+
+
+    this.opacities = new Array(this.WIDTH * this.HEIGHT).fill(1);
+
   }
 
   onChangeSpeed($event) {

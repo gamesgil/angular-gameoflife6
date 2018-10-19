@@ -1,15 +1,20 @@
+<h1>Game of Life</h1>
+<h2>Gil Steiner (2018)</h2>
+
 <table>
   <tbody>
     <tr *ngFor="let row of getArray(HEIGHT)">
-      <td #cell *ngFor="let cell of getArray(WIDTH)"
+      <td #cell *ngFor="let col of getArray(WIDTH)"
+        [style.opacity]="getOpacity(col, row)"
         (click)="mark($event, cell, row)"></td>
     </tr>
   </tbody>
 </table>
 
 <button (click)="clear()">Clear</button>
-<button (click)="analyze()">Analyze</button>
 <button (click)="next()">Next</button>
 <button (click)="playPause()">{{otherState}}</button>
 <br>
-<input type="range" max="100" min="1" (change)="onChangeSpeed($event)">
+<label for="speed">Speed </label><input type="range" id="speed" max="100" min="1" (change)="onChangeSpeed($event)">
+<input type="checkbox" name="analyze" (click)="onClickAnalyze($event)"><label for="analyze">Analyze Mode</label>
+
