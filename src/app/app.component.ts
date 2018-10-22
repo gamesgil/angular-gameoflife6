@@ -9,8 +9,8 @@ import { viewClassName } from '@angular/compiler';
 export class AppComponent implements AfterViewInit {
   @ViewChildren('cell') tds;
 
-  readonly WIDTH = 20;
-  readonly HEIGHT = 10;
+  readonly WIDTH = 80;
+  readonly HEIGHT = 30;
 
   timeout: any;
 
@@ -52,6 +52,8 @@ export class AppComponent implements AfterViewInit {
     if (this.isAnalyzeMode) {
       this.analyze();
     }
+
+    this.opacities[y * this.WIDTH + x] = 1;
   }
 
   next() {
